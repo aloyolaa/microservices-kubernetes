@@ -14,4 +14,6 @@ public interface CourseService {
     Course update(Long id, Course course);
 
     Boolean delete(Long id);
+
+    Boolean existsByName(String name);
 }

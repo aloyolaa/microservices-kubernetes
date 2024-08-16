@@ -1,8 +1,10 @@
 package org.aloyolaa.springcloud.msvc.courses.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.aloyolaa.springcloud.msvc.courses.validator.annotation.UniqueNameDB;
 
 @Getter
 @Setter
@@ -14,6 +16,8 @@ public class Course {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @NotBlank
+    @UniqueNameDB
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 }

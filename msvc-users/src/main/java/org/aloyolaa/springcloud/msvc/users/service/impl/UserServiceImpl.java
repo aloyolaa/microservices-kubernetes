@@ -54,4 +54,10 @@ public class UserServiceImpl implements UserService {
 
         return false;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }

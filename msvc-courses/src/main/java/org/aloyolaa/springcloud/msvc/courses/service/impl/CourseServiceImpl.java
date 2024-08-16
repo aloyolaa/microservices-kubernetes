@@ -52,4 +52,10 @@ public class CourseServiceImpl implements CourseService {
 
         return false;
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean existsByName(String name) {
+        return courseRepository.existsByName(name);
+    }
 }
