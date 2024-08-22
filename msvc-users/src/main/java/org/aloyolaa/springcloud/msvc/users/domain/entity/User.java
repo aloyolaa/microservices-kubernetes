@@ -1,4 +1,4 @@
-package org.aloyolaa.springcloud.msvc.users.model.entity;
+package org.aloyolaa.springcloud.msvc.users.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

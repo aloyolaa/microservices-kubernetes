@@ -2,8 +2,8 @@ package org.aloyolaa.springcloud.msvc.users.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aloyolaa.springcloud.msvc.users.model.dto.ResponseDto;
-import org.aloyolaa.springcloud.msvc.users.model.entity.User;
+import org.aloyolaa.springcloud.msvc.users.domain.dto.ResponseDto;
+import org.aloyolaa.springcloud.msvc.users.domain.entity.User;
 import org.aloyolaa.springcloud.msvc.users.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +61,16 @@ public class UserController {
         return new ResponseEntity<>(
                 new ResponseDto<>(
                         userService.delete(id),
+                        true
+                ), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/by-course")
+    public ResponseEntity<ResponseDto<List<User>>> getAllById(@RequestParam List<Long> ids) {
+        return new ResponseEntity<>(
+                new ResponseDto<>(
+                        userService.getAllById(ids),
                         true
                 ), HttpStatus.OK
         );

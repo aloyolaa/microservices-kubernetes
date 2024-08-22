@@ -1,8 +1,10 @@
 package org.aloyolaa.springcloud.msvc.courses.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.aloyolaa.springcloud.msvc.courses.model.dto.ErrorResponseDto;
-import org.aloyolaa.springcloud.msvc.courses.model.dto.ResponseDto;
+import org.aloyolaa.springcloud.msvc.courses.domain.dto.ErrorResponseDto;
+import org.aloyolaa.springcloud.msvc.courses.domain.dto.ResponseDto;
+import org.aloyolaa.springcloud.msvc.courses.exception.ServiceCommunicationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -30,12 +32,42 @@ public class ExceptionController {
 
         log.error(errorMessage);
 
-        ErrorResponseDto<Map<String, String>> errorResponse = new ErrorResponseDto<>("Error al Guardar Datos", errors);
+        ErrorResponseDto<Map<String, String>> errorResponse = new ErrorResponseDto<>("Error parsing data", errors);
 
         return new ResponseEntity<>(
                 new ResponseDto<>(
                         errorResponse,
                         false)
                 , HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ResponseDto<ErrorResponseDto<String>>> entityNotFoundException(EntityNotFoundException e) {
+        String errorMessage = "EntityNotFoundException: " + e.getMessage();
+
+        log.error(errorMessage);
+
+        ErrorResponseDto<String> errorResponse = new ErrorResponseDto<>("Error searching for data", e.getMessage());
+
+        return new ResponseEntity<>(
+                new ResponseDto<>(
+                        errorResponse,
+                        false)
+                , HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ServiceCommunicationException.class)
+    public ResponseEntity<ResponseDto<ErrorResponseDto<String>>> serviceCommunicationException(ServiceCommunicationException e) {
+        String errorMessage = "ServiceCommunicationException: " + e.getMessage();
+
+        log.error(errorMessage);
+
+        ErrorResponseDto<String> errorResponse = new ErrorResponseDto<>("Error in communication between services", e.getMessage());
+
+        return new ResponseEntity<>(
+                new ResponseDto<>(
+                        errorResponse,
+                        false)
+                , HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

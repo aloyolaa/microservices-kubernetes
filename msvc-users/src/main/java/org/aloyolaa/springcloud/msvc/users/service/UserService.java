@@ -1,6 +1,6 @@
 package org.aloyolaa.springcloud.msvc.users.service;
 
-import org.aloyolaa.springcloud.msvc.users.model.entity.User;
+import org.aloyolaa.springcloud.msvc.users.domain.entity.User;
 
 import java.util.List;
 
@@ -16,4 +16,6 @@ public interface UserService {
     Boolean delete(Long id);
 
     Boolean existsByEmail(String email);
+
+    List<User> getAllById(List<Long> ids);
 }

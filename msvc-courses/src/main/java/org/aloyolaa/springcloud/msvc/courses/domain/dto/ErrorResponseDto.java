@@ -1,4 +1,4 @@
-package org.aloyolaa.springcloud.msvc.users.model.dto;
+package org.aloyolaa.springcloud.msvc.courses.domain.dto;
 
 public record ErrorResponseDto<T>(
         String title,

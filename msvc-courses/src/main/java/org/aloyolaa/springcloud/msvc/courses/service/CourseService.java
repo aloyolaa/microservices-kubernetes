@@ -1,6 +1,7 @@
 package org.aloyolaa.springcloud.msvc.courses.service;
 
-import org.aloyolaa.springcloud.msvc.courses.model.entity.Course;
+import org.aloyolaa.springcloud.msvc.courses.domain.entity.Course;
+import org.aloyolaa.springcloud.msvc.courses.domain.model.User;
 
 import java.util.List;
 
@@ -16,4 +17,10 @@ public interface CourseService {
     Boolean delete(Long id);
 
     Boolean existsByName(String name);
+
+    User assignUser(Long userId, Long courseId);
+
+    User createUser(User user, Long courseId);
+
+    User removeUser(Long userId, Long courseId);
 }
