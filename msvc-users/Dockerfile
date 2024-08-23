@@ -24,7 +24,7 @@ FROM amazoncorretto:17 AS prod
 
 WORKDIR /app
 
-EXPOSE 8001
+EXPOSE $PORT
 
 RUN mkdir ./logs
 
