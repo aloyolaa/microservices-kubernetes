@@ -1,0 +1,79 @@
+services:
+  msvc-users-app:
+    container_name: ${MSVC_USERS_HOST}
+    #image: msvc-users:1.0.0
+    build:
+      context: ./
+      dockerfile: ./msvc-users/Dockerfile
+    restart: always
+    ports:
+      - ${MSVC_USERS_PORT}:${MSVC_USERS_PORT}
+    environment:
+      - PORT=${MSVC_USERS_PORT}
+      - DB_HOST=${MSVC_USERS_DB_HOST}
+      - DB_PORT=${MSVC_USERS_DB_PORT}
+      - DB_NAME=${MSVC_USERS_DB_NAME}
+      - DB_USERNAME=${MSVC_USERS_DB_USERNAME}
+      - DB_PASSWORD=${MSVC_USERS_DB_PASSWORD}
+      - MSVC_COURSES_HOST=${MSVC_COURSES_HOST}
+      - MSVC_COURSES_PORT=${MSVC_COURSES_PORT}
+    depends_on:
+      - msvc-users-db
+    env_file: ./msvc-users/.env
+
+  msvc-courses-app:
+    container_name: ${MSVC_COURSES_HOST}
+    #image: msvc-courses:1.0.0
+    build:
+      context: ./
+      dockerfile: ./msvc-courses/Dockerfile
+    restart: always
+    ports:
+      - ${MSVC_COURSES_PORT}:${MSVC_COURSES_PORT}
+    environment:
+      - PORT=${MSVC_COURSES_PORT}
+      - DB_HOST=${MSVC_COURSES_DB_HOST}
+      - DB_PORT=${MSVC_COURSES_DB_PORT}
+      - DB_NAME=${MSVC_COURSES_DB_NAME}
+      - DB_USERNAME=${MSVC_COURSES_DB_USERNAME}
+      - DB_PASSWORD=${MSVC_COURSES_DB_PASSWORD}
+      - MSVC_USERS_HOST=${MSVC_USERS_HOST}
+      - MSVC_USERS_PORT=${MSVC_USERS_PORT}
+    depends_on:
+      - msvc-courses-db
+    env_file: ./msvc-courses/.env
+
+  msvc-users-db:
+    container_name: ${MSVC_USERS_DB_HOST}
+    image: mysql:8.0.39
+    restart: always
+    ports:
+      - ${MSVC_USERS_DB_PORT}:${MSVC_USERS_DB_PORT}
+    environment:
+      - MYSQL_USER=${MSVC_USERS_DB_USERNAME}
+      - MYSQL_PASSWORD=${MSVC_USERS_DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MSVC_USERS_DB_PASSWORD}
+      - MYSQL_DATABASE=${MSVC_USERS_DB_NAME}
+    volumes:
+      - msvc_users:/var/lib/mysql
+    env_file: ./msvc-users/.env
+
+  msvc-courses-db:
+    container_name: ${MSVC_COURSES_DB_HOST}
+    image: postgres:16
+    restart: always
+    ports:
+      - ${MSVC_COURSES_DB_PORT}:${MSVC_COURSES_DB_PORT}
+    environment:
+      - POSTGRES_USER=${MSVC_COURSES_DB_USERNAME}
+      - POSTGRES_PASSWORD=${MSVC_COURSES_DB_PASSWORD}
+      - POSTGRES_DB=${MSVC_COURSES_DB_NAME}
+    volumes:
+      - msvc_courses:/var/lib/postgresql/data
+    env_file: ./msvc-courses/.env
+
+volumes:
+  msvc_users:
+    external: true
+  msvc_courses:
+    external: true
